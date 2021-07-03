@@ -1,0 +1,66 @@
+<html>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+    <script>
+
+    let socket = new WebSocket('ws://localhost:8000/ws/');
+    socket.onopen = function(e){
+        console.log('Connection established');
+    };
+
+    socket.onmessage = function(e){
+        // console.log(e.data);
+        var recData = JSON.parse(e.data);
+        dataObjNew = dataObj['data']['datasets'][0]['data'];
+        dataObjNew.shift();
+        dataObjNew.push(recData.num_trades);
+        dataObj['data']['datasets'][0]['data'] = dataObjNew;
+
+        labelnew = dataObj['data']['labels'];
+        var k = labelnew[3];
+        labelnew.shift();
+        labelnew.push(k + 3);
+        dataObj['data']['labels'] = labelnew
+        console.log(recData.open_price)
+        window.myLine.update();
+
+    };
+
+    socket.onclose = function(e){
+        console.log('Connection CLosed');
+    };
+    
+    </script>
+<body>
+    <div style="max-width: 900px; max-height: 400px;">
+        <canvas id="myChart" width="900" height="400"></canvas>
+    </div>
+</body>
+    
+    <script>
+    var dataObj={
+        type: 'line',
+        data: {
+            labels: [0, 3, 6, 9, 12, 15, 18, 21, 24],
+            datasets: [{
+                label: 'Real time data of open prices of etherium in USD',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        callback: function(value, index, values) {
+                            return '$' + value;
+                        }
+                    }
+                }]
+            }
+        }
+    }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    window.myLine = new Chart(ctx, dataObj);
+    </script>
+</html>

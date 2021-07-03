@@ -20,16 +20,17 @@ class Dashboard(AsyncWebsocketConsumer):
     
     async def receive(self, text_data):
         datapoint = json.loads(text_data)
-        val = datapoint['value']
+        num_trades = datapoint['num_trades']
+        open_price = datapoint['open_price']
         await self.channel_layer.group_send(
             self.groupname,
             {
                 'type': 'preprocess',
-                'value': val,
+                'num_trades': num_trades,
+                'open_price': open_price,
             }
         )
         print(text_data)
     
     async def preprocess(self, event):
-        val = event['value']
-        await self.send(text_data=json.dumps({'value': val}))
+        await self.send(text_data=json.dumps({'num_trades': event['num_trades'], 'open_price': event['open_price']}))

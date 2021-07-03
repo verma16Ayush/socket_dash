@@ -19,10 +19,14 @@ from django.urls import path
 from django.http import HttpResponse
 from django.shortcuts import render
 
-def home(request: HttpRequest):
-    return render(request, 'index.html')
+def trades(request: HttpRequest):
+    return render(request, 'index_trades.html')
+
+def open_price(request):
+    return render(request, 'index_prices.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home),
+    path('trades/', trades),
+    path('open_price/', open_price),
 ]

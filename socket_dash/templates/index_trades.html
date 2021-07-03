@@ -13,8 +13,15 @@
         var recData = JSON.parse(e.data);
         dataObjNew = dataObj['data']['datasets'][0]['data'];
         dataObjNew.shift();
-        dataObjNew.push(recData.value);
+        dataObjNew.push(recData.num_trades);
         dataObj['data']['datasets'][0]['data'] = dataObjNew;
+
+        labelnew = dataObj['data']['labels'];
+        var k = labelnew[3];
+        labelnew.shift();
+        labelnew.push(k + 3);
+        dataObj['data']['labels'] = labelnew
+        console.log(recData.num_trades)
         window.myLine.update();
 
     };
@@ -34,17 +41,17 @@
     var dataObj={
         type: 'line',
         data: {
-            labels: [],
+            labels: [0, 3, 6, 9, 12, 15, 18, 21, 24],
             datasets: [{
-                label: 'Real time data',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'Real time data of number of trades of ethereum',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
             }]
         },
         options: {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
                     }
                 }]
             }
