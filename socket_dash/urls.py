@@ -22,11 +22,11 @@ from django.shortcuts import render
 def trades(request: HttpRequest):
     return render(request, 'index_trades.html')
 
-def open_price(request):
+def open_prices(request):
     return render(request, 'index_prices.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('trades/', trades),
-    path('open_price/', open_price),
+    path('open_prices/', open_prices),
 ]
